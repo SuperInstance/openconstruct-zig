@@ -1,10 +1,13 @@
-# openconstruct-zig
+# openconstruct-zig — Zero-Dependency Zig Binding
 
-Zig binding for **OpenConstruct** — a thin client for structured agent onboarding.
+Zig client for [OpenConstruct](https://github.com/SuperInstance/OpenConstruct). Comptime-friendly, WASM-ready, cross-compilation out of the box.
 
-## Why Zig?
+## What This Gives You
 
-Zig is a modern systems language ideal for ultralight deployments, WASM targets, and cross-compilation. This binding provides zero-dependency, comptime-friendly integration with the OpenConstruct onboarding flow.
+- **Zero allocations in hot path** — comptime-known module lists
+- **WASM target** — compile to `wasm32` for browser-based agents
+- **Cross-compilation** — `zig build -Dtarget=aarch64-linux` just works
+- **No dependencies** — pure Zig, links against nothing
 
 ## Quick Start
 
@@ -35,37 +38,20 @@ pub fn main() !void {
 
 ## API
 
-### `OpenConstructClient`
-
-The main client struct. Call `init()` to create, `deinit()` to clean up.
-
 | Method | Description |
-|---|---|
+|--------|-------------|
+| `init()` / `deinit()` | Create and destroy the client |
 | `start()` | Begin a new onboarding session |
 | `declareAgent(identity)` | Declare agent name, model, capabilities |
-| `listModules(filter)` | List available modules, optionally filtered by domain |
+| `listModules(filter)` | List modules, optionally filtered by domain |
 | `selectModules(names)` | Select modules for the configuration |
-| `chooseInterface(choice)` | Choose REST API, WebSocket, CLI, or SDK-embedded |
+| `chooseInterface(choice)` | Choose: `rest_api`, `websocket`, `cli`, `sdk_embedded` |
 | `generateConfig()` | Produce the final `OnboardingConfig` |
-
-### Types
-
-- **`AgentIdentity`** — name, model, capabilities
-- **`ModuleDescriptor`** — name, domain, version, description
-- **`ModuleFilter`** — optional domain filter
-- **`InterfaceChoice`** — enum: `rest_api`, `websocket`, `cli`, `sdk_embedded`
-- **`OnboardingConfig`** — final structured output with session, agent, modules, interface, timestamp
 
 ## Building
 
-```sh
+```bash
 zig build
-```
-
-## Testing
-
-```sh
-zig build test
 ```
 
 ## License
